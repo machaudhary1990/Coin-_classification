@@ -10,7 +10,7 @@ import tensorflow.keras.backend as K
 class DataGenerator(tf.keras.utils.Sequence):
     def __init__(self, root, target_size=(640,512),batch_size=32,shuffle=True):
         self.rootDir = root
-        self.lables = [5, 10, 25, 50, 100]
+        self.labels = [5, 10, 25, 50, 100]
         self.target_size = target_size
         self.batch_size = batch_size
         self.shuffle = shuffle
@@ -37,12 +37,13 @@ class DataGenerator(tf.keras.utils.Sequence):
         list_images = [self.images_list[k] for k in indexes]
 
         width,height = self.target_size
-        
+    
         X,Y = [],[]
 
         for image in list_images:
             image_path = os.path.join(self.images_path,image)
-            
+            name_split = image.split("_")
+            Y.append(self.labels.index(int(name_split[0])))
             image1 = cv2.imread(image_path)
             
             in_img = cv2.resize(image1,self.target_size)
@@ -59,4 +60,3 @@ if __name__ == "__main__":
             target_size=(640,512),batch_size=2,shuffle=True)
     item = training_generator.__getitem__(5)
     print(item)
-:
