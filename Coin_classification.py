@@ -19,18 +19,17 @@ class Classify_NET:
         inputs = tf.keras.Input(shape=self.image_size)
 
         #Encoding image 1
-        incep = tf.keras.applications.MobileNet(include_top=False)
-        x1 = incep(inputs)
+        base_model = tf.keras.applications.MobileNet(include_top=False)
+        x1 = base_model(inputs)
         x1 = tf.keras.layers.MaxPooling2D(pool_size=(2, 2))(x1)
 
         #Decoding part
-        x1 = tf.keras.layers.Concatenate()([x1,x2])
         x1 = tf.keras.layers.Flatten()(x1)
         x1 = tf.keras.layers.Dense(1024,activation="relu")(x1)
         x1 = tf.keras.layers.Dense(128,activation="relu")(x1)
         x1 = tf.keras.layers.Dense(1,activation="relu")(x1)
         
-        model = tf.keras.Model([inputs,x1)
+        model = tf.keras.Model(inputs,x1)
         return model
 if __name__ == "__main__":
     # %%
@@ -39,11 +38,11 @@ if __name__ == "__main__":
     from database import DataGenerator
     # Build model
     target_size = (480,480)
-    idnet = ID_NET(image_size =target_size)
-    model = idnet.get_model()
+    classify = Classify_NET(image_size =target_size)
+    model = classify.get_model()
     model.summary()
     #model.compile(optimizer='adam', loss='categorical_crossentropy')
-    training_generator = DataGenerator("./dataset",target_size=target_size,batch_size=2,shuffle=False)
+    training_generator = DataGenerator("./dataset/train",target_size=target_size,batch_size=4,shuffle=False)
     if not os.path.exists('checkpoints_dnn'):
         os.makedirs('checkpoints_dnn') 
     checkpoint_path = "checkpoints_dnn/weights.{epoch:02d}.hdf5"

@@ -52,7 +52,7 @@ class DataGenerator(tf.keras.utils.Sequence):
 
             
         X,Y= np.array(X), np.array(Y)        
-        X = (1./255)*X
+        # X = (1./255)*X
         return X,Y
 
 if __name__ == "__main__":
