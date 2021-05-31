@@ -5,7 +5,6 @@ import pandas as pd
 import subprocess as sb
 import tensorflow as tf
 from tensorflow.keras import layers
-import tensorflow.keras.backend as K
 
 class DataGenerator(tf.keras.utils.Sequence):
     def __init__(self, root, target_size=(640,512),batch_size=32,shuffle=True):
@@ -43,7 +42,9 @@ class DataGenerator(tf.keras.utils.Sequence):
         for image in list_images:
             image_path = os.path.join(self.images_path,image)
             name_split = image.split("_")
-            Y.append(self.labels.index(int(name_split[0])))
+            Y_labels = [0,0,0,0,0]
+            Y_lables[self.labels.index(int(name_split[0]))]=1
+            Y.append[Y_lables]
             image1 = cv2.imread(image_path)
             
             in_img = cv2.resize(image1,self.target_size)

@@ -27,7 +27,7 @@ class Classify_NET:
         x1 = tf.keras.layers.Flatten()(x1)
         x1 = tf.keras.layers.Dense(1024,activation="relu")(x1)
         x1 = tf.keras.layers.Dense(128,activation="relu")(x1)
-        x1 = tf.keras.layers.Dense(1,activation="relu")(x1)
+        x1 = tf.keras.layers.Dense(5,activation="relu")(x1)
         
         model = tf.keras.Model(inputs,x1)
         return model
